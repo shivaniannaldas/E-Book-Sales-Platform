@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            margin-bottom: 0;
+            padding: 0;
+            color: #20314e;
+        }
+
+        .profile-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .profile-image img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            object-fit: cover;
+        }
+
+        .profile-image img.default-icon {
+            object-fit: contain; /* Ensures the default icon scales properly */
+            background-color: #ddd;
+        }
+
+        .edit-photo {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background-color: white;
+            color: #20314e;
+            font-size: 16px;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+        }
+
+        .profile-info h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        .divider {
+            border-top: 1px solid #ddd;
+            margin: 30px 0;
+        }
+
+        .toggle-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle-button {
+            background-color: white;
+            color: #20314e;
+            padding: 12px 30px;
+            border: 2px solid #20314e;
+            border-radius: 5px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-button.active {
+            background-color: #20314e;
+            color: white;
+        }
+
+        .book-list {
+            display: none;
+            padding: 10px 20px;
+        }
+
+        .book-list.active {
+            display: block;
+        }
+
+        .book-item {
+            font-size: 16px;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark text-white" style="background-color: #20314e;">
+        <a class="navbar-brand" href="#">BookStore</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                
+                <li class="nav-item"><a class="nav-link" href="browse.html">Browse Books</a></li>
+                <li class="nav-item"><a class="nav-link" href="contactus.html">Contact Us</a></li>
+            </ul>
+
+            
+
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <a href="favorites.html" class="nav-icon">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="cart.html" class="nav-icon">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="profile.html" class="nav-icon">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+            
+        </div>
+    </nav>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-image">
+                <!-- Default user icon -->
+                <img id="user-photo" class="default-icon" src="user1.png" alt="Default User Icon" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover;">
+
+                <input type="file" id="photo-input" style="display: none;" accept="image/*">
+                <button class="edit-photo" onclick="editPhoto()">✎</button>
+            </div>
+            <div class="profile-info">
+                <h2 id="user-name">Shivani Annaldas</h2>
+                <p id="user-email">shivaniannaldas@gmail.com</p>
+                <p id="user-contact">+91 987654321</p>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="toggle-section">
+            <button class="toggle-button active" onclick="showSection('purchased')">Books Purchased</button>
+            <button class="toggle-button" onclick="showSection('requested')">Books Requested</button>
+        </div>
+        <div id="purchased" class="book-list active">
+            <div class="book-item">1. The Gene: An Intimate History</div>
+            <div class="book-item">2. The Innovators</div>
+        </div>
+        <div id="requested" class="book-list">
+            <div class="book-item">1. 1984 by George Orwell</div>
+            <div class="book-item">2. Pride and Prejudice</div>
+        </div>
+        
+    </div><br><br>
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 BookStore. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function editPhoto() {
+            document.getElementById('photo-input').click();
+        }
+
+        document.getElementById('photo-input').addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.getElementById('user-photo');
+                    img.src = e.target.result;
+                    img.classList.remove('default-icon'); // Remove default styling
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.book-list');
+            const buttons = document.querySelectorAll('.toggle-button');
+
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelector(`[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

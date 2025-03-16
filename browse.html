@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Books</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <style>
+        /* Side panel styling */
+        #side-panel {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: 500px;
+            height: 100%;
+            background: #f8f9fa;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 20px;
+        }
+        #side-panel.active {
+            right: 0;
+        }
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 900;
+        }
+        #overlay.active {
+            display: block;
+        }
+        #side-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .button-container {
+            display: flex;
+            align-items: center; /* Align items vertically centered */
+            gap: 10px; 
+            /* Adjust the space between buttons */
+            margin-left: 100px;
+        }
+
+        
+        .wishlist-btn {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            
+            border: 2px solid #ccc;
+            border-radius: 5px; 
+            
+            cursor: pointer;
+            
+            padding: 8px 12px;
+            transition: color 0.3s ease;
+        }
+        
+        
+        
+        .wishlist-icon {
+            width: 50px; /* Adjust size as needed */
+            height: 40px;
+            margin-right: 5px;
+        }
+        .btn {
+            padding: 8px 16px; /* Adjust padding of the Add to Cart button */
+            font-size: 14px;
+        }
+        
+    </style>
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark text-white" style="background-color: #20314e;">
+        <a class="navbar-brand" href="#">BookStore</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                
+                <li class="nav-item"><a class="nav-link" href="browse.html">Browse Books</a></li>
+                <li class="nav-item"><a class="nav-link" href="contactus.html">Contact Us</a></li>
+            </ul>
+
+            
+
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <a href="favorites.html" class="nav-icon">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="cart.html" class="nav-icon">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="profile.html" class="nav-icon">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+            
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <h2 class="text-center">Available Books</h2><br>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="text-center"></h2>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" id="search-bar" placeholder="Search books" aria-label="Search">
+            </form>
+        </div>
+        <div id="no-results-message" class="text-center text-danger" style="display: none; margin-top: 10px;">
+            No results found
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-3">
+                <h4>Categories</h4>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="#" class="filter-link" data-category="all">All</a></li>
+                    <li class="list-group-item"><a href="#" class="filter-link" data-category="science">Science</a></li>
+                    <li class="list-group-item"><a href="#" class="filter-link" data-category="fiction">Fiction</a></li>
+                    <li class="list-group-item"><a href="#" class="filter-link" data-category="technology">Technology</a></li>
+                    <li class="list-group-item"><a href="#" class="filter-link" data-category="romance">Romance</a></li>
+                    <li class="list-group-item"><a href="#" class="filter-link" data-category="mystery">Mystery</a></li>
+                    <li class="list-group-item"><a href="#" class="filter-link" data-category="fantasy">Fantasy</a></li>
+                    <li class="list-group-item"><a href="#" class="filter-link" data-category="biography">Biography</a></li>
+                    <!-- Add more categories as needed -->
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="row" id="book-list">
+                    <!-- Example Book Card -->
+                    <div class="col-md-4 book-item" data-category="science" >
+                        <div class="card">
+                            <img src="science1.jpg" class="card-img-top" alt="A Brief History of Time">
+                            <div class="card-body">
+                                <h5 class="card-title">A Brief History of Time</h5>
+                                <p class="card-text">Stephen Hawking</p>
+                                <p class="card-text">Rs. 350</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="fiction">
+                        <div class="card">
+                            <img src="fiction1.jpg" class="card-img-top" alt="One Hundred Years of Solitude">
+                            <div class="card-body">
+                                <h5 class="card-title">One Hundred Years of Solitude</h5>
+                                <p class="card-text">Gabriel García Márquez</p>
+                                <p class="card-text">Rs. 499</p>
+                                <a href="bookdetails.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="science">
+                        <div class="card">
+                            <img src="science2.jpg" class="card-img-top" alt="The Gene: An Intimate History">
+                            <div class="card-body">
+                                <h5 class="card-title">The Gene: An Intimate History</h5>
+                                <p class="card-text">Siddhartha Mukherjee</p>
+                                <p class="card-text">Rs. 550</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="technology">
+                        <div class="card">
+                            <img src="tech1.jpg" class="card-img-top" alt="The Innovators">
+                            <div class="card-body">
+                                <h5 class="card-title">The Innovators</h5>
+                                <p class="card-text">Walter Isaacson</p>
+                                <p class="card-text">Rs. 600</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="technology">
+                        <div class="card">
+                            <img src="tech2.jpg" class="card-img-top" alt="Hooked: How to Build Habit-Forming Products">
+                            <div class="card-body">
+                                <h5 class="card-title">Hooked: How to Build Habit-Forming Products</h5>
+                                <p class="card-text">Nir Eyal</p>
+                                <p class="card-text">Rs. 350</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="fiction">
+                        <div class="card">
+                            <img src="fiction2.jpg" class="card-img-top" alt="Midnight's Children">
+                            <div class="card-body">
+                                <h5 class="card-title">Midnight's Children</h5>
+                                <p class="card-text">Salman Rushdie</p>
+                                <p class="card-text">Rs. 599</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="fantasy">
+                        <div class="card">
+                            <img src="fantasy1.jpg" class="card-img-top" alt="The Lord of the Rings">
+                            <div class="card-body">
+                                <h5 class="card-title">The Lord of the Rings</h5>
+                                <p class="card-text">J.R.R. Tolkien</p>
+                                <p class="card-text">Rs. 999 (box set)</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="romance">
+                        <div class="card">
+                            <img src="romance1.jpg" class="card-img-top" alt="2 States: The Story of My Marriage">
+                            <div class="card-body">
+                                <h5 class="card-title">2 States: The Story of My Marriage</h5>
+                                <p class="card-text">Chetan Bhagat</p>
+                                <p class="card-text">Rs. 250</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="fantasy">
+                        <div class="card">
+                            <img src="fantasy2.jpg" class="card-img-top" alt="A Song of Ice and Fire">
+                            <div class="card-body">
+                                <h5 class="card-title">A Song of Ice and Fire</h5>
+                                <p class="card-text">George R.R. Martin</p>
+                                <p class="card-text">Rs. 3,499 (complete series)</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="mystery">
+                        <div class="card">
+                            <img src="mystery1.jpg" class="card-img-top" alt="Gone Girl">
+                            <div class="card-body">
+                                <h5 class="card-title">Gone Girl</h5>
+                                <p class="card-text">Gillian Flynn</p>
+                                <p class="card-text">Rs. 499</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 book-item" data-category="biography">
+                        <div class="card">
+                            <img src="bio1.jpg" class="card-img-top" alt="The Diary of a Young Girl">
+                            <div class="card-body">
+                                <h5 class="card-title">The Diary of a Young Girl</h5>
+                                <p class="card-text"> Anne Frank</p>
+                                <p class="card-text">Rs. 299</p>
+                                <a href="book-details.html" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More book cards as needed -->
+                </div>
+            </div>
+        </div>
+        <!-- Side panel for book details -->
+    <div id="overlay"></div>
+    <div id="side-panel">
+        <span class="close-btn" onclick="closePanel()">&times;</span>
+        <h3></h3><br>
+        <div id="book-details">
+            <!-- Content populated dynamically with JavaScript -->
+        </div>
+        <div class="button-container">
+            <button class="wishlist-btn">
+                <img src="wishlist1.png" alt="Heart Icon" class="wishlist-icon">
+            </button>
+        
+            <button class="btn btn-primary mt-2 " style="height:54px; width:200px;font-size: 18px; white-space: normal;">
+                <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+        </div>
+        
+    </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 BookStore. All Rights Reserved.</p>
+    </footer>
+
+    <script src="index.js"></script>
+    <script>
+        function openPanel(book) {
+            // Populate panel with book details
+            document.getElementById('book-details').innerHTML = `
+                <img src="${book.image}" alt="${book.title}" class="img-fluid">
+                <h5 class="mt-3">${book.title}</h5>
+                <p><strong>Author:</strong> ${book.author}</p>
+                <p>${book.description}</p>
+                <p><strong>Price:</strong> Rs. ${book.price}</p>
+            `;
+            // Show the panel and overlay
+            document.getElementById('side-panel').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+
+        document.getElementById('search-bar').addEventListener('input', function () {
+            const searchValue = this.value.toLowerCase();
+            const books = document.querySelectorAll('.book-item'); // Replace with the correct class for your book items
+            let resultsFound = false;
+        
+            books.forEach(book => {
+                if (book.textContent.toLowerCase().includes(searchValue)) {
+                    book.style.display = ''; // Show matching books
+                    resultsFound = true;
+                } else {
+                    book.style.display = 'none'; // Hide non-matching books
+                }
+            });
+        
+            // Show "No results found" message if no matches are found
+            const noResultsMessage = document.getElementById('no-results-message');
+            if (resultsFound) {
+                noResultsMessage.style.display = 'none';
+            } else {
+                noResultsMessage.style.display = 'block';
+            }
+        });
+
+        
+
+        
+
+
+        function closePanel() {
+            document.getElementById('side-panel').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                // Example data for the selected book
+                const book = {
+                    image: this.closest('.card').querySelector('img').src,
+                    title: this.closest('.card').querySelector('.card-title').innerText,
+                    author: this.closest('.card').querySelector('.card-text').innerText,
+                    description: 'This is a placeholder description for the book. Add a real description here.',
+                    price: this.closest('.card').querySelector('.card-text:nth-of-type(2)').innerText.replace('Rs. ', '')
+                };
+                openPanel(book);
+            });
+        });
+    </script>
+    
+</body>
+</html>
